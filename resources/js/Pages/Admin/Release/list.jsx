@@ -5,9 +5,10 @@ import {
     Input,
     Select,
 } from 'antd';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { Inertia } from '@inertiajs/inertia';
-
+const { confirm } = Modal;
 
 const formItemLayout = {
     labelCol: {
@@ -78,7 +79,7 @@ const ReleaseList = ({ auth, pages, categories }) => {
             key: 'delete',
             fixed: 'right',
             width: 70,
-            render: () => <a style={{ color: 'red' }}>Delete</a>,
+            render: (text, record, index) => <a onClick={() => handleDelete(text, record, index)} style={{ color: 'red' }}>Delete</a>,
         },
     ];
 
@@ -105,13 +106,14 @@ const ReleaseList = ({ auth, pages, categories }) => {
 
     const [open, setOpen] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
-    const [modalText, setModalText] = useState('Content of the modal');
 
 
     const handleSubmit = (data) => {
         console.log('xxx44', data, detailId);
         //update detail by detailId
         Inertia.put(route('pages.update', detailId), data);
+        setConfirmLoading(false);
+        setOpen(false);
 
     };
 
@@ -120,6 +122,23 @@ const ReleaseList = ({ auth, pages, categories }) => {
         setDetailId(record.id);
         form.setFieldsValue(record);
         showModal();
+    }
+
+    const handleDelete = (text, record, index) => {
+        console.log('xdededde', record);
+        confirm({
+            title: 'Are you sure delete this page?',
+            icon: <ExclamationCircleFilled />,
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+                Inertia.delete(route('pages.destroy', record.id));
+            },
+            onCancel() {
+              console.log('Cancel');
+            },
+          });
     }
 
     const onChange = (pagination, filters, sorter, extra) => {
@@ -131,7 +150,7 @@ const ReleaseList = ({ auth, pages, categories }) => {
     };
 
     const handleOk = () => {
-        // setConfirmLoading(true);
+        setConfirmLoading(true);
         // setTimeout(() => {
         //     setOpen(false);
         //     setConfirmLoading(false);
