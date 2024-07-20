@@ -18,7 +18,9 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $categories = Category::all();
+        // $categories = Category::all();
+        $categories = Category::orderBy('id', 'desc')->get();
+
         return Inertia::render('Admin/Categories/list', [
             'categories' => $categories
         ]);
@@ -36,9 +38,24 @@ class CategoryController extends Controller
         
     }
 
-    public function update(Request $request, Category $category)
+    public function destroy($id)
     {
+        $category = Category::find($id);
+        $category->delete();
+ 
+        return redirect()->route('admin.categories.list');
+    }
+ 
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255'
+        ]);
+        
+        $category = Category::find($id);
         $category->update($request->only('name'));
-        return response()->json($category);
+
+        return redirect()->route('admin.categories.list');
     }
 }
