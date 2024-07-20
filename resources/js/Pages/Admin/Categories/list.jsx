@@ -199,6 +199,7 @@ const CategoryList = ({ auth, categories }) => {
                     showSorterTooltip={{
                         target: 'sorter-icon',
                     }}
+                    pagination={false}
                     bordered
                 />
             </DashboardLayout>
