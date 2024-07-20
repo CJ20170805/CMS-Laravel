@@ -11,10 +11,10 @@ class PageController extends Controller
 {
     public function index(Request $request)
     {
-        $pages = Page::with('category')->get();
+        //$pages = Page::with('categories')->get();
         $categories = Category::all();
         return Inertia::render('Admin/Release/list', [
-            'pages' => $pages,
+            // 'pages' => $pages,
             'categories' => $categories
         ]);
     }
@@ -24,7 +24,7 @@ class PageController extends Controller
         $sortBy = $request->query('sortBy', 'created_at');
         $sortDirection = $request->query('sortDirection', 'desc');
 
-        $pages = Page::with('category')->orderBy($sortBy, $sortDirection)->get();
+        $pages = Page::with('categories')->orderBy($sortBy, $sortDirection)->get();
 
         return response()->json($pages);
     }
@@ -40,7 +40,7 @@ class PageController extends Controller
    //show specifiy id's detail
    public function show($id)
    {
-       $page = Page::with('category')->find($id);
+       $page = Page::with('categories')->find($id);
        return Inertia::render('Admin/Release/show', [
            'page' => $page
        ]);
@@ -79,15 +79,22 @@ class PageController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'category_id' => 'required|exists:categories,id'
+            'category_id' => 'required|exists:categories,id',
+            'categories' => 'array'
         ]);
 
         $page = Page::create([
             'title' => $request->title,
             'content' => $request->content,
             'user_id' => auth()->id(),
-            'category_id' => $request->category_id
+            'category_id' => $request->category_id,
         ]);
+
+        //$page = Page::create($request->all());
+
+        if ($request->has('categories')) {
+            $page->categories()->attach($request->categories);
+        }
 
         return redirect()->route('admin.release.list');
     }

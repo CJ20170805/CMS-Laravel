@@ -32,7 +32,8 @@ const formItemLayout = {
 const AdminRelase = ({ auth, categories }) => {
 
     const handleSubmit = (data) => {
-        Inertia.post(route('pages.store'), data, {
+        let d = {...data, categories: [data.category_id]};
+        Inertia.post(route('pages.store'), d, {
             onSuccess: () => reset(),
         });
     };

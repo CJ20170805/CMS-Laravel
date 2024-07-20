@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DashboardLayout from "@/Layouts/DashboardLayout"
+import './release.scss';
 import {
     Button, Modal, Table, Form,
     Input,
@@ -52,8 +53,9 @@ const ReleaseList = ({ auth, categories }) => {
                     id: item.id,
                     title: item.title,
                     content: item.content,
-                    category: item.category.name,
-                    category_id: item.category.id,
+                    // category: item.category.name,
+                    category: item.categories,
+                    // category_id: item.category.id,
                     created_at: dayjs(item.created_at).format('YYYY/MM/DD hh:mm:ss'),
                     updated_at: dayjs(item.updated_at).format('YYYY/MM/DD hh:mm:ss'),
                 }
@@ -86,6 +88,13 @@ const ReleaseList = ({ auth, categories }) => {
         {
             title: 'Category',
             dataIndex: 'category',
+            render: (categories) => (
+                <div>
+                    {categories.map(category => (
+                        <div className='category-span' key={category.id}>{category.name}</div>
+                    ))}
+                </div>
+            ),
         },
         {
             title: 'Created_at',

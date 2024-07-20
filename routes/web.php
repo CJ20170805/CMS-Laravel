@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PageController;
@@ -23,14 +24,22 @@ Route::get('/news', function () {
 
 
 Route::middleware(['auth'])->group(function () {
+    // release 
     Route::get('/admin/release/index', [PageController::class, 'create'])->name('admin.release.index');
     Route::get('/admin/release/list', [PageController::class, 'index'])->name('admin.release.list');
     Route::get('/admin/release/list/order', [PageController::class, 'order'])->name('admin.release.list.order');
     Route::post('/pages', [PageController::class, 'store'])->name('pages.store');
-    // update pages
     Route::put('/pages/{page}', [PageController::class, 'update'])->name('pages.update');
-    // delete pages
     Route::delete('/pages/{page}', [PageController::class, 'destroy'])->name('pages.destroy');
+
+
+    // categories
+    Route::get('/admin/categories/index', [CategoryController::class, 'create'])->name('admin.categories.index');
+    Route::get('/admin/categories/list', [CategoryController::class, 'index'])->name('admin.categories.list');
+    Route::post('/categories', [CategoryController::class, 'store'])->name('admin.categories.store');
+    Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('admin.categories.update');
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
+
 });
 
 

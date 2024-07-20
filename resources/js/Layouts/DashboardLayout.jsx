@@ -25,7 +25,10 @@ const items = [
     getItem('relase', 'admin.release.index'),
     getItem('list', 'admin.release.list'),
   ]),
-  getItem('Categories', 'admin.categories', <GoldOutlined />),
+  getItem('Categories', 'categories_sub', <GoldOutlined />, [
+    getItem('create', 'admin.categories.index'),
+    getItem('list', 'admin.categories.list'),
+  ]),
   getItem('User', 'sub1', <UserOutlined />, [
     getItem('Tom', '3'),
     getItem('Bill', '4'),

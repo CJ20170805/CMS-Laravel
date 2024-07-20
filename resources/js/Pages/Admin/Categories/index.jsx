@@ -7,6 +7,7 @@ import {
     Input,
     Select,
 } from 'antd';
+import { Inertia } from "@inertiajs/inertia";
 
 
 
@@ -35,11 +36,12 @@ const CategoriesRelase = ({ auth, pages }) => {
     const { data, setData, post, processing, reset, errors } = useForm({
         content: '',
     });
-    
-    const submit = (e) => {
+
+    const submit = (data) => {
         //e.preventDefault();
-        console.log('eeeee', e);
+        console.log('eeeee', data);
         //post(route('chirps.store'), { onSuccess: () => reset() });
+        Inertia.post(route('admin.categories.store'), data);
     };
 
 
@@ -67,7 +69,7 @@ const CategoriesRelase = ({ auth, pages }) => {
                     <Input />
                 </Form.Item>
 
-{/* 
+                {/* 
                 <Form.Item
                     label="Select"
                     name="Select"
