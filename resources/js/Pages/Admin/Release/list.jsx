@@ -8,6 +8,8 @@ import {
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { Inertia } from '@inertiajs/inertia';
+import { Head } from '@inertiajs/react';
+import axios from 'axios';
 const { confirm } = Modal;
 
 const formItemLayout = {
@@ -29,9 +31,40 @@ const formItemLayout = {
     },
 };
 
-const ReleaseList = ({ auth, pages, categories }) => {
+const ReleaseList = ({ auth, categories }) => {
 
     const [form] = Form.useForm();
+    const [pages, setPages] = useState([]);
+
+
+    useEffect(() => {
+        fetchPages();
+    }, []);
+
+
+    const fetchPages = async (sortBy = 'created_at', sortDirection = 'desc') => {
+        try {
+            const res = await axios.get(route('admin.release.list.order'), { params: { sortBy, sortDirection } });
+            console.log('res', res.data);
+            const data = res.data.map((item) => {
+                return {
+                    key: item.id,
+                    id: item.id,
+                    title: item.title,
+                    content: item.content,
+                    category: item.category.name,
+                    category_id: item.category.id,
+                    created_at: dayjs(item.created_at).format('YYYY/MM/DD hh:mm:ss'),
+                    updated_at: dayjs(item.updated_at).format('YYYY/MM/DD hh:mm:ss'),
+                }
+            });
+            setPages(data);
+        } catch (error) {
+            message.error('Error fetching pages');
+            console.error('Error fetching pages:', error);
+        }
+    };
+
 
     let columns = [
         {
@@ -44,8 +77,7 @@ const ReleaseList = ({ auth, pages, categories }) => {
             showSorterTooltip: {
                 target: 'full-header',
             },
-            sorter: (a, b) => a.title.length - b.title.length,
-            sortDirections: ['descend'],
+            sorter: true,
         },
         {
             title: 'Content',
@@ -58,14 +90,12 @@ const ReleaseList = ({ auth, pages, categories }) => {
         {
             title: 'Created_at',
             dataIndex: 'created_at',
-            defaultSortOrder: 'descend',
-            sorter: (a, b) => new Date(a.created_at) - new Date(b.created_at),
+            sorter: true,
         },
         {
             title: 'Updated_at',
             dataIndex: 'updated_at',
-            defaultSortOrder: 'descend',
-            sorter: (a, b) => new Date(a.updated_at) - new Date(b.updated_at),
+            sorter: true,
         },
         {
             title: 'Edit',
@@ -83,23 +113,6 @@ const ReleaseList = ({ auth, pages, categories }) => {
         },
     ];
 
-    let data = [];
-
-
-    console.log('pages', pages);
-
-    data = pages.map((item) => {
-        return {
-            key: item.id,
-            id: item.id,
-            title: item.title,
-            content: item.content,
-            category: item.category.name,
-            category_id: item.category.id,
-            created_at: dayjs(item.created_at).format('YYYY/MM/DD hh:mm:ss'),
-            updated_at: dayjs(item.updated_at).format('YYYY/MM/DD hh:mm:ss'),
-        }
-    });
 
 
     const [detailId, setDetailId] = useState(null);
@@ -136,13 +149,18 @@ const ReleaseList = ({ auth, pages, categories }) => {
                 Inertia.delete(route('pages.destroy', record.id));
             },
             onCancel() {
-              console.log('Cancel');
+                console.log('Cancel');
             },
-          });
+        });
     }
 
-    const onChange = (pagination, filters, sorter, extra) => {
+    const onChange = async (pagination, filters, sorter, extra) => {
         console.log('params', pagination, filters, sorter, extra);
+
+        const sortBy = sorter.field || 'title';
+        const sortDirection = sorter.order === 'descend' ? 'desc' : 'asc';
+        fetchPages(sortBy, sortDirection);
+
     };
 
     const showModal = () => {
@@ -155,7 +173,7 @@ const ReleaseList = ({ auth, pages, categories }) => {
         //     setOpen(false);
         //     setConfirmLoading(false);
         // }, 2000);
-        
+
         //submit form
         form.submit();
     };
@@ -168,6 +186,7 @@ const ReleaseList = ({ auth, pages, categories }) => {
 
     return (
         <>
+            <Head title="Relase list" />
             <Modal
                 title="Edit"
                 open={open}
@@ -237,7 +256,7 @@ const ReleaseList = ({ auth, pages, categories }) => {
             <DashboardLayout user={auth.user} title={['Admin', 'release', 'list']}>
                 <Table
                     columns={columns}
-                    dataSource={data}
+                    dataSource={pages}
                     onChange={onChange}
                     showSorterTooltip={{
                         target: 'sorter-icon',

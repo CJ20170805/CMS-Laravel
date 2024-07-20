@@ -9,7 +9,7 @@ use Inertia\Inertia;
 
 class PageController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $pages = Page::with('category')->get();
         $categories = Category::all();
@@ -17,6 +17,16 @@ class PageController extends Controller
             'pages' => $pages,
             'categories' => $categories
         ]);
+    }
+
+    public function order(Request $request)
+    {
+        $sortBy = $request->query('sortBy', 'created_at');
+        $sortDirection = $request->query('sortDirection', 'desc');
+
+        $pages = Page::with('category')->orderBy($sortBy, $sortDirection)->get();
+
+        return response()->json($pages);
     }
 
     public function create()

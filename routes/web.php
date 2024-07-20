@@ -25,6 +25,7 @@ Route::get('/news', function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/release/index', [PageController::class, 'create'])->name('admin.release.index');
     Route::get('/admin/release/list', [PageController::class, 'index'])->name('admin.release.list');
+    Route::get('/admin/release/list/order', [PageController::class, 'order'])->name('admin.release.list.order');
     Route::post('/pages', [PageController::class, 'store'])->name('pages.store');
     // update pages
     Route::put('/pages/{page}', [PageController::class, 'update'])->name('pages.update');
