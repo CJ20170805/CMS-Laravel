@@ -32,8 +32,7 @@ const formItemLayout = {
 const AdminRelase = ({ auth, categories }) => {
 
     const handleSubmit = (data) => {
-        let d = {...data, categories: [data.category_id]};
-        Inertia.post(route('pages.store'), d, {
+        Inertia.post(route('pages.store'), data, {
             onSuccess: () => reset(),
         });
     };
@@ -81,7 +80,7 @@ const AdminRelase = ({ auth, categories }) => {
 
                 <Form.Item
                     label="Category"
-                    name="category_id"
+                    name="categories"
                     rules={[
                         {
                             required: true,
@@ -89,15 +88,20 @@ const AdminRelase = ({ auth, categories }) => {
                         },
                     ]}
                 >
-                    <Select>
-                        {
-                            categories.map((category) => (
-                                <Select.Option key={category.id} value={category.id}>
-                                    {category.name}
-                                </Select.Option>
-                            ))
+                    <Select
+                        mode="multiple"
+                        allowClear
+                        style={{
+                            width: '100%',
+                        }}
+                        placeholder="Please select"
+                        options={
+                            categories.map(item => {
+                                return { value: item.id, label: item.name, key: item.id }
+                            }
+                            )
                         }
-                    </Select>
+                    / >
                 </Form.Item>
 
 

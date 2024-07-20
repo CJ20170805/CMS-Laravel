@@ -52,15 +52,21 @@ class PageController extends Controller
        $request->validate([
            'title' => 'required|string|max:255',
            'content' => 'required|string',
-           'category_id' => 'required|exists:categories,id'
+           'categories' => 'array',
+           //'category_id' => 'required|exists:categories,id'
        ]);
 
        $page = Page::find($id);
        $page->update([
            'title' => $request->title,
            'content' => $request->content,
-           'category_id' => $request->category_id
+           //'category_id' => $request->category_id
        ]);
+       
+       if ($request->has('categories')) {
+           $page->categories()->sync($request->categories);
+       }
+
 
        return redirect()->route('admin.release.list');
    }
@@ -79,7 +85,7 @@ class PageController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
+            // 'category_id' => 'required|exists:categories,id',
             'categories' => 'array'
         ]);
 
@@ -87,7 +93,7 @@ class PageController extends Controller
             'title' => $request->title,
             'content' => $request->content,
             'user_id' => auth()->id(),
-            'category_id' => $request->category_id,
+            // 'category_id' => $request->category_id,
         ]);
 
         //$page = Page::create($request->all());

@@ -142,7 +142,12 @@ const ReleaseList = ({ auth, categories }) => {
     const handleEdit = (text, record, index) => {
         console.log('edit', text, record, index);
         setDetailId(record.id);
-        form.setFieldsValue(record);
+        let rc = {
+            title: record.title,
+            content: record.content,
+            categories: record.category.map(category => category.id),
+        }
+        form.setFieldsValue(rc);
         showModal();
     }
 
@@ -242,7 +247,7 @@ const ReleaseList = ({ auth, categories }) => {
 
                     <Form.Item
                         label="Category"
-                        name="category_id"
+                        name="categories"
                         rules={[
                             {
                                 required: true,
@@ -250,15 +255,20 @@ const ReleaseList = ({ auth, categories }) => {
                             },
                         ]}
                     >
-                        <Select>
-                            {
-                                categories.map((category) => (
-                                    <Select.Option key={category.id} value={category.id}>
-                                        {category.name}
-                                    </Select.Option>
-                                ))
+                        <Select
+                         mode="multiple"
+                         allowClear
+                         style={{
+                           width: '100%',
+                         }}
+                         placeholder="Please select"
+                         options={
+                            categories.map(item=>{
+                                return {value: item.id, label: item.name, key: item.id}
                             }
-                        </Select>
+                            )
+                         }
+                        / >
                     </Form.Item>
                 </Form>
             </Modal>
