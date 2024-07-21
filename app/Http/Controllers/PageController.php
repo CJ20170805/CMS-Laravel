@@ -41,10 +41,18 @@ class PageController extends Controller
    public function show($id)
    {
        $page = Page::with('categories')->find($id);
-       return Inertia::render('Admin/Release/show', [
+       return Inertia::render('Home/detail', [
            'page' => $page
        ]);
    }
+
+   // return all of the pages
+   public function list()
+   {
+       $pages = Page::with('categories')->orderBy('created_at', 'desc')->get();
+       return response()->json($pages);
+   }
+
 
    //update specifiy id's detail
    public function update(Request $request, $id)
@@ -62,7 +70,7 @@ class PageController extends Controller
            'content' => $request->content,
            //'category_id' => $request->category_id
        ]);
-       
+
        if ($request->has('categories')) {
            $page->categories()->sync($request->categories);
        }

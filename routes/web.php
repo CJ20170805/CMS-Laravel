@@ -23,6 +23,12 @@ Route::get('/news', function () {
 })->name('news');
 
 
+
+Route::get('/pages', [PageController::class, 'list'])->name('pages.list');
+Route::get('/pages/{page}', [PageController::class, 'show'])->name('pages.show');
+
+
+
 Route::middleware(['auth'])->group(function () {
     // release 
     Route::get('/admin/release/index', [PageController::class, 'create'])->name('admin.release.index');

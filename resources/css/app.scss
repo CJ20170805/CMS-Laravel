@@ -5,7 +5,11 @@
 #app{
     height: 100vh;
     width: 100%;
+    background-color: #fff;
     overflow: hidden;
+}
+.ant-layout-content{
+    background-color: #fff;
 }
 
 .logo{
