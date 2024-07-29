@@ -31,7 +31,8 @@ const PageDetail = ({ auth, page }) => {
     return (
         <MainLayout auth={auth}>
             <Descriptions style={{marginTop: '20px'}} title="" items={desc} />
-            <h2 style={{marginTop: '40px'}}>{page.content}</h2>
+            <h2 dangerouslySetInnerHTML={{__html: page.content}}></h2>
+
             
         </MainLayout>
     )

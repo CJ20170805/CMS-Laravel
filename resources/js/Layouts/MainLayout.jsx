@@ -8,9 +8,9 @@ const items = [
     {
         key: '/', label: 'Home'
     },
-    {
-        key: 'news', label: 'News'
-    }
+    // {
+    //     key: 'news', label: 'News'
+    // }
 ];
 
 
@@ -83,7 +83,8 @@ const Home = ({ auth, children }) => {
                 style={{
                     padding: '0 48px',
                     flex: '1',
-                    overflowY: 'auto'
+                    overflowY: 'auto',
+                    background: '#fff',
                 }}
             >
                 <div className='content'

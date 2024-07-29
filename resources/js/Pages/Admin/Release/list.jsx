@@ -12,6 +12,7 @@ import { Inertia } from '@inertiajs/inertia';
 import { Head } from '@inertiajs/react';
 import axios from 'axios';
 const { confirm } = Modal;
+import TextEditor from "@/Components/TextEditor"
 
 const formItemLayout = {
     labelCol: {
@@ -84,6 +85,9 @@ const ReleaseList = ({ auth, categories }) => {
         {
             title: 'Content',
             dataIndex: 'content',
+            //if the content length greater than 20, cut it and add '...' at the end
+            render: (text) => text.length > 20 ? `${text.slice(0, 20)}...` : text,
+
         },
         {
             title: 'Category',
@@ -241,7 +245,8 @@ const ReleaseList = ({ auth, categories }) => {
                             },
                         ]}
                     >
-                        <Input.TextArea />
+                        {/* <Input.TextArea /> */}
+                        <TextEditor />
                     </Form.Item>
 
 

@@ -9,6 +9,7 @@ import {
     Input,
     Select,
 } from 'antd';
+import TextEditor from "@/Components/TextEditor"
 
 const formItemLayout = {
     labelCol: {
@@ -74,7 +75,9 @@ const AdminRelase = ({ auth, categories }) => {
                         },
                     ]}
                 >
-                    <Input.TextArea />
+                    {/* <Input.TextArea /> */}
+
+                    <TextEditor />
                 </Form.Item>
 
 

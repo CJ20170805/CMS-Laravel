@@ -22,6 +22,7 @@
     },
     "dependencies": {
         "@inertiajs/inertia": "^0.11.1",
+        "@tinymce/tinymce-react": "^5.1.1",
         "antd": "^5.19.1",
         "dayjs": "^1.11.11"
     }
