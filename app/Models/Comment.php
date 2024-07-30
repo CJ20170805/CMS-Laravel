@@ -13,13 +13,14 @@ class Comment extends Model
         'user_id',
         'page_id',
         'content',
+        'name',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    
+
     public function page()
     {
         return $this->belongsTo(Page::class);

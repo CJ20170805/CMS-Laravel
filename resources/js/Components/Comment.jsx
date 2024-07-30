@@ -32,7 +32,8 @@ const Comment = ({ page, auth }) => {
         const obj = {
             content: values.content,
             page_id: page.id,
-            user_id: auth.user.id,
+            user_id: auth.user? auth.user.id: null,
+            name: auth.user ? null : values.name,
         }
         axios.post(route('Comment.store'), obj)
             .then(function (response) {
@@ -59,7 +60,7 @@ const Comment = ({ page, auth }) => {
                         <List.Item>
                             <List.Item.Meta
                                 title={<p className='p1'>{item.content}</p>}
-                                description={<p className='p2'> <span className='s1'>{item.user.name}</span> <span>{dayjs(item.updated_at).fromNow()}</span> </p>}
+                                description={<p className='p2'> <span className='s1'>{item.user? item.user.name: item.name}</span> <span>{dayjs(item.updated_at).fromNow()}</span> </p>}
                             />
                         </List.Item>
                     )}
@@ -81,6 +82,16 @@ const Comment = ({ page, auth }) => {
                     maxWidth: 600,
                 }}
             >
+            {!auth.user && (
+                <Form.Item
+                    name="name"
+                    label="Name"
+                    rules={[{ required: true, message: 'Please input your name!' }]}
+                >
+                    <Input placeholder="Enter your name" />
+                </Form.Item>
+            )}
+
                 <Form.Item
                     label=""
                     name="content"

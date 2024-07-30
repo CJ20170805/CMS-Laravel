@@ -49,6 +49,9 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
+Route::get('/comments', [CommentController::class, 'index'])->name('Comment.index');
+Route::post('/comments', [CommentController::class, 'store'])->name('Comment.store');
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin', function () {
@@ -63,9 +66,6 @@ Route::middleware(['auth'])->group(function () {
         return Inertia::render('Admin/Categories/index');
     })->name('admin.categories');
 
-    Route::get('/comments', [CommentController::class, 'index'])->name('Comment.index');
-    Route::post('/comments', [CommentController::class, 'store'])->name('Comment.store');
-    
 });
 
 

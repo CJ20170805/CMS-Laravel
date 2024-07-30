@@ -25,12 +25,20 @@ class CommentController extends Controller
     {
         $request->validate([
             'content' => 'required|string',
+            'name' => 'nullable|string|max:255',
         ]);
 
         $comment = new Comment();
         $comment->content = $request->content;
-        $comment->user_id = Auth::id();
+        //$comment->user_id = Auth::id();
         $comment->page_id = $request->page_id;
+
+        if ($request->user()) {
+            $comment->user_id = Auth::id();
+        } else {
+            $comment->name = $request->name;
+        }
+
         $comment->save();
 
         return response()->json($comment->load('user'), 201);
