@@ -45,6 +45,22 @@
     
 }
 
+.comments .p1{
+    font-size: 18px;
+}
+.comments .p2{
+    width: 100%;
+    display: flex;
+}
+.comments .s1{
+    display: block;
+    width: 180px;
+}
+
+.comment-list{
+    margin: 0px 0 40px 0;
+}
+
 :where(.css-dev-only-do-not-override-98ntnt).ant-input{
     box-sizing: border-box;
     margin: 0;

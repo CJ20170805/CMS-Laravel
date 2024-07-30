@@ -18,6 +18,11 @@ class Page extends Model
         'category_id',
     ];
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

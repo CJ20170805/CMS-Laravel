@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\CommentController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -61,6 +62,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/categories', function () {
         return Inertia::render('Admin/Categories/index');
     })->name('admin.categories');
+
+    Route::get('/comments', [CommentController::class, 'index'])->name('Comment.index');
+    Route::post('/comments', [CommentController::class, 'store'])->name('Comment.store');
+    
 });
 
 
