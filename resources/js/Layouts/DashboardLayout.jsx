@@ -29,6 +29,9 @@ const items = [
     getItem('create', 'admin.categories.index'),
     getItem('list', 'admin.categories.list'),
   ]),
+  getItem('Comments', 'comments_sub', <FileOutlined />, [
+    getItem('list', 'admin.comments.list'),
+  ]),
   getItem('User', 'sub1', <UserOutlined />, [
     getItem('Tom', '3'),
     getItem('Bill', '4'),

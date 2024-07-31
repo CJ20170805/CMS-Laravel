@@ -1,12 +1,56 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
 {
+    public function list()
+    {
+        $comments = Comment::with('user', 'page')->get();
+
+        return Inertia::render('Admin/Comments/list', [
+            'comments' => $comments
+        ]);
+    }
+    public function delete(Request $request, $id)
+    {
+        $comment = Comment::findOrFail($id);
+
+        Gate::authorize('moderate-comments');
+
+        $comment->delete();
+
+        return redirect()->route('admin.comments.list');
+    }
+
+    public function updateVisibility(Request $request, $id)
+    {
+        // Validate the request to ensure 'is_visible' is either '0' or '1'
+        $validated = $request->validate([
+            'is_visible' => 'required|in:0,1'
+        ]);
+
+        // Find the comment by ID
+        $comment = Comment::findOrFail($id);
+
+        // Authorize the request
+        Gate::authorize('moderate-comments');
+
+        // Update the 'is_visible' field with the new value from the request
+        $comment->is_visible = $validated['is_visible'];
+        $comment->save();
+
+        return redirect()->route('admin.comments.list');
+    }
+
+    //store
+
     public function index(Request $request)
     {
         $request->validate([
@@ -14,9 +58,9 @@ class CommentController extends Controller
         ]);
 
         $comments = Comment::where('page_id', $request->page_id)
-                            ->with('user')
-                            ->orderBy('id', 'desc')
-                            ->get();
+            ->with('user')
+            ->orderBy('id', 'desc')
+            ->get();
 
         return response()->json($comments);
     }

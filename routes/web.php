@@ -47,10 +47,16 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('admin.categories.update');
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
 
+    //comments
+    Route::get('/admin/comments/list', [CommentController::class, 'list'])->name('admin.comments.list');
+    Route::delete('/comments/{id}', [CommentController::class, 'delete'])->name('admin.comments.delete');
+    Route::patch('/comments/{id}/update-visibility', [CommentController::class, 'updateVisibility'])->name('admin.comments.visible');
 });
 
 Route::get('/comments', [CommentController::class, 'index'])->name('Comment.index');
 Route::post('/comments', [CommentController::class, 'store'])->name('Comment.store');
+
+Route::get('/admin/categories/listAll', [CategoryController::class, 'list'])->name('admin.categories.listAll');
 
 
 Route::middleware(['auth'])->group(function () {

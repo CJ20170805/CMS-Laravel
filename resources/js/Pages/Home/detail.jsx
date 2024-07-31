@@ -3,6 +3,7 @@ import { Descriptions } from 'antd';
 import { useEffect, useState } from 'react';
 import Comment from '@/Components/Comment';
 import dayjs from 'dayjs';
+import { Head } from '@inertiajs/react';
 
 
 const PageDetail = ({ auth, page }) => {
@@ -32,6 +33,7 @@ const PageDetail = ({ auth, page }) => {
     return (
         <MainLayout auth={auth}>
             <div className="detail-wrapper">
+                <Head title='Detail'/ >
             <Descriptions style={{marginTop: '20px'}} title="" items={desc} />
             <h2 dangerouslySetInnerHTML={{__html: page.content}}></h2>
 

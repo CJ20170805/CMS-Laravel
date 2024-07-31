@@ -14,6 +14,7 @@ class Comment extends Model
         'page_id',
         'content',
         'name',
+        'is_visible',
     ];
 
     public function user()

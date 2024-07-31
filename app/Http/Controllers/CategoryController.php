@@ -26,6 +26,14 @@ class CategoryController extends Controller
         ]);
     }
 
+    public function list()
+    {
+        // $categories = Category::all();
+        $categories = Category::orderBy('id', 'desc')->get();
+
+        return response()->json($categories);
+    }
+
     public function store(Request $request)
     {
         $request->validate([

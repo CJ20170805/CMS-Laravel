@@ -21,7 +21,7 @@ const Comment = ({ page, auth }) => {
             const response = await axios.get(route('Comment.index', { page_id: page.id }));
             // setDesc(response.data);
             console.log('ddds', response);
-            setCommentsDaata(response.data);
+            setCommentsDaata(response.data.filter(item=> item.is_visible));
         } catch (error) {
             console.error('Error fetching comments:', error);
         }
@@ -57,12 +57,12 @@ const Comment = ({ page, auth }) => {
                     itemLayout="horizontal"
                     dataSource={commentsData}
                     renderItem={(item, index) => (
-                        <List.Item>
-                            <List.Item.Meta
-                                title={<p className='p1'>{item.content}</p>}
-                                description={<p className='p2'> <span className='s1'>{item.user? item.user.name: item.name}</span> <span>{dayjs(item.updated_at).fromNow()}</span> </p>}
-                            />
-                        </List.Item>
+                    <List.Item>
+                        <List.Item.Meta
+                            title={<p className='p1'>{item.content}</p>}
+                            description={<p className='p2'> <span className='s1'>{item.user? item.user.name: item.name}</span> <span>{dayjs(item.created_at).fromNow()}</span> </p>}
+                        />
+                    </List.Item>
                     )}
                 />
             </div>
