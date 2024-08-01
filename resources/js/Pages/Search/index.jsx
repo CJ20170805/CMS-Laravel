@@ -6,6 +6,7 @@ import './search.scss';
 import axios from 'axios';
 
 const { Search } = Input;
+const { Option } = Select;
 
 
 const SearchPage = ({ auth }) => {
