@@ -1,6 +1,6 @@
 import MainLayout from '@/Layouts/MainLayout'
 import React, { useEffect, useState } from 'react';
-import { Input, List, Select } from 'antd';
+import { Input, List, Select, Pagination } from 'antd';
 import { Head } from '@inertiajs/react';
 import './search.scss';
 import axios from 'axios';
@@ -14,6 +14,9 @@ const SearchPage = ({ auth }) => {
     const [category, setCategory] = useState('');
     const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
+    const [total, setTotal] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [perPage, setPerPage] = useState(5);
 
     useEffect(() => {
         fetchCategories(true);
@@ -33,7 +36,7 @@ const SearchPage = ({ auth }) => {
 
     const handleCategory = (value) => {
         setCategory(value);
-      }
+    }
 
     const selectBefore = (
         <Select
@@ -47,15 +50,30 @@ const SearchPage = ({ auth }) => {
         </Select>
     );
 
+    const handlePaginationChange = (page, pageSize) => {
+        console.log('handlePaginationChange', page, pageSize);
+       handleSearch(query, page, pageSize);
+    };
+  
 
-
-    const handleSearch = async (value) => {
+    const handleSearch = async (value, page = 1, pageSize = perPage) => {
+        console.log('xsss22222', value, page, pageSize);
         setQuery(value);
+        setCurrentPage(page);
+        setPerPage(pageSize);
 
-        const response = await axios.get(route('page.search'), { params: { query: value, category_id: category } });
+        const response = await axios.get(route('page.search'), {
+            params: {
+                query: value, 
+                category_id: category, 
+                per_page: pageSize,
+                page: page
+            }
+        });
 
+   
         //limited 100 maxium strings, if oversize add '...' at the end
-        const data = response.data.map(item => {
+        const data = response.data.data.map(item => {
             if (item.content.length > 200) {
                 item.content = item.content.substring(0, 200) + '...';
             }
@@ -63,6 +81,7 @@ const SearchPage = ({ auth }) => {
         });
 
         setResults(data);
+        setTotal(response.data.total);
     };
     return (
         <MainLayout auth={auth}>
@@ -73,9 +92,9 @@ const SearchPage = ({ auth }) => {
                     allowClear
                     enterButton="Search"
                     size="large"
-                    onSearch={handleSearch}
+                    onSearch={v=>handleSearch(v, currentPage, perPage)}
                     addonBefore={
-                      selectBefore
+                        selectBefore
                     }
                 />
                 <div className="result">
@@ -95,6 +114,16 @@ const SearchPage = ({ auth }) => {
                             </List.Item>
                         )}
                     />
+
+                    {total > 5 && <Pagination
+                        current={currentPage}
+                        pageSize={perPage}
+                        total={total}
+                        showSizeChanger
+                        pageSizeOptions={[5, 10, 20, 50]}
+                        onChange={handlePaginationChange}
+                        onShowSizeChange={handlePaginationChange}
+                    />}
                 </div>
             </div>
         </MainLayout>

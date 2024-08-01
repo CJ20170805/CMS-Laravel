@@ -23,6 +23,8 @@ class PageController extends Controller
     {
         $query = $request->input('query');
         $category_id = $request->input('category_id');
+        $perPage = $request->input('per_page', 10); // Default to 10 results per page
+        $page = $request->input('page', 1); // Default to page 1
 
         $pages = Page::query();
 
@@ -40,7 +42,9 @@ class PageController extends Controller
             });
         }
 
-        return response()->json($pages->get());
+        $paginatedPages = $pages->paginate($perPage, ['*'], 'page', $page);
+
+        return response()->json($paginatedPages);
     }
 
 
