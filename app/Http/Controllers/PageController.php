@@ -19,6 +19,31 @@ class PageController extends Controller
         ]);
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $category_id = $request->input('category_id');
+
+        $pages = Page::query();
+
+        if ($query) {
+            $pages->where(function ($q) use ($query) {
+                $q->where('title', 'LIKE', "%{$query}%")
+                  ->orWhere('content', 'LIKE', "%{$query}%");
+            });
+        }
+
+        if ($category_id) {
+            // Filter by category through the many-to-many relationship
+            $pages->whereHas('categories', function ($q) use ($category_id) {
+                $q->where('categories.id', $category_id);
+            });
+        }
+
+        return response()->json($pages->get());
+    }
+
+
     public function order(Request $request)
     {
         $sortBy = $request->query('sortBy', 'created_at');

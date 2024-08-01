@@ -26,6 +26,17 @@ class CategoryController extends Controller
         ]);
     }
 
+    public function getPagesByCategory($categoryId)
+    {
+        // $category = Category::with('pages')->get();
+
+        // return response()->json($category);
+
+        //query specific category
+        $category = Category::with('pages')->find($categoryId);
+        return response()->json($category->pages);
+    }
+
     public function list()
     {
         // $categories = Category::all();

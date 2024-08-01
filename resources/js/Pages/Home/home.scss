@@ -1,0 +1,16 @@
+.main-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding: 20px 0 0 0;
+    .main-left{
+        width: 250px;
+        height: 100%;
+    }
+    .main-content{
+        padding: 0 0 0 20px;
+        flex: 1;
+        height: 100%;
+        overflow-y: auto;
+    }
+}

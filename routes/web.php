@@ -19,9 +19,11 @@ Route::get('/', function () {
     ]);
 })->name('/');
 
-Route::get('/news', function () {
-    return Inertia::render('News/index');
-})->name('news');
+Route::get('/search', function () {
+    return Inertia::render('Search/index');
+})->name('search');
+
+
 
 
 
@@ -38,11 +40,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/pages', [PageController::class, 'store'])->name('pages.store');
     Route::put('/pages/{page}', [PageController::class, 'update'])->name('pages.update');
     Route::delete('/pages/{page}', [PageController::class, 'destroy'])->name('pages.destroy');
+    Route::get('/api/search', [PageController::class, 'search'])->name('page.search');
 
 
     // categories
     Route::get('/admin/categories/index', [CategoryController::class, 'create'])->name('admin.categories.index');
     Route::get('/admin/categories/list', [CategoryController::class, 'index'])->name('admin.categories.list');
+    Route::get('/categories/{id}/pages', [CategoryController::class, 'getPagesByCategory'])->name('admin.categories.pages');
     Route::post('/categories', [CategoryController::class, 'store'])->name('admin.categories.store');
     Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('admin.categories.update');
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');

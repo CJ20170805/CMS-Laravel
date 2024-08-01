@@ -13,6 +13,7 @@ import { Head } from '@inertiajs/react';
 import axios from 'axios';
 const { confirm } = Modal;
 
+
 const formItemLayout = {
     labelCol: {
         xs: {
@@ -31,6 +32,7 @@ const formItemLayout = {
         },
     },
 };
+
 
 const CategoryList = ({ auth, comments }) => {
 
